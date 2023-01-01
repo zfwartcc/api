@@ -375,9 +375,17 @@ router.put('/:cid/rating', microAuth, async (req, res) => {
 			};
 		}
 
-		user.rating = req.body.rating;
+		if (user.rating !== req.body.rating) {
+			user.rating = req.body.rating;
 
-		await user.save();
+			await user.save();
+
+			await req.app.dossier.create({
+				by: -1,
+				affected: req.params.cid,
+				action: %a was set as Rating ${%req.body.ratomg} by an external service.
+		});
+		}
 	}
 	catch(e) {
 		req.app.Sentry.captureException(e);
