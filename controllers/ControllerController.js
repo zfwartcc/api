@@ -383,7 +383,7 @@ router.put('/:cid/rating', microAuth, async (req, res) => {
 			await req.app.dossier.create({
 				by: -1,
 				affected: req.params.cid,
-				action: %a was set as Rating ${%req.body.ratomg} by an external service.
+				action: `%a was set as Rating ${req.body.rating} by an external service.`,
 		});
 		}
 	}
