@@ -9,6 +9,7 @@ import User from '../models/User.js';
 import getUser from '../middleware/getUser.js';
 import auth from '../middleware/auth.js';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 router.get('/request/upcoming', getUser, async (req, res) => {
 	try {
@@ -440,7 +441,7 @@ router.put('/session/submit/:id', getUser, auth(['atm', 'datm', 'ta', 'ins', 'mt
 
 		const instructor = await User.findOne({cid: session.instructorCid}).select('fname lname').lean();
 
-		// Send the training record to vatsim
+		// Send the training record to vatusa
 		const vatusaApi = axios.create({ baseUrl: 'https://api.vatusa.net/v2'}, {
 			params: { apiKey: process.env.VATUSA_API_KEY } }
 		);
@@ -460,8 +461,8 @@ router.put('/session/submit/:id', getUser, auth(['atm', 'datm', 'ta', 'ins', 'mt
                     solo_granted: false
 					});	
 
-		// If we get here, vatsim update was successful
-		console.log('VATSIM API Training note submitted - status: ' + Response.status);
+		// If we get here, vatusa update was successful
+		console.log('VATUSA API Training note submitted - status: ' + Response.status);
 
 		// update the database flag to submitted to prevent further updates.	
 		const sessionfinalize = await TrainingSession.findByIdAndUpdate(req.params.id, {
