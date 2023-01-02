@@ -70,7 +70,7 @@ userSchema.virtual('isStaff').get(function() {
 
 userSchema.virtual('isIns').get(function() {
 	if(!this.roleCodes) return false;
-	const search = ['atm', 'datm', 'ta', 'ins', 'mtr'];
+	const search = ['atm', 'datm', 'ta', 'ins', 'mtr', 'ia'];
 	return this.roleCodes.some(r => search.includes(r));
 });
 
