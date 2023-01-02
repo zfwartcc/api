@@ -440,6 +440,43 @@ router.put('/session/submit/:id', getUser, auth(['atm', 'datm', 'ta', 'ins', 'mt
 
 		const instructor = await User.findOne({cid: session.instructorCid}).select('fname lname').lean();
 
+		// Send the training record to vatsim
+		const vatusaApi = axios.create({ baseUrl: 'https://api.vatusa.net/v2'}, {
+			params: { apiKey: process.env.VATUSA_API_KEY } }
+		);
+
+		const Response = await vatusaApi.post(`https://api.vatusa.net/v2/user/${session.studentCid}/training/record/?apikey=${process.env.VATUSA_API_KEY}` , 
+					{
+					instructor_id: session.instructorCid,
+                	session_date: dayjs(req.body.startTime).format("YYYY-MM-DD HH:mm"),
+					position: req.body.position,
+					duration: duration,
+					movements: req.body.movements,
+					score: req.body.progress,
+					notes: req.body.studentNotes,
+			     	ots_status: req.body.ots,
+				    location: req.body.location,
+                    is_cbt: false,
+                    solo_granted: false
+					});	
+
+		// If we get here, vatsim update was successful
+		console.log('VATSIM API Training note submitted - status: ' + Response.status);
+
+		// update the database flag to submitted to prevent further updates.	
+		const sessionfinalize = await TrainingSession.findByIdAndUpdate(req.params.id, {
+			sessiondate: dayjs(req.body.startTime).format("YYYY-MM-DD HH:mm"),
+			position: req.body.position,
+			progress: req.body.progress,
+			duration: duration,
+			movements: req.body.movements,
+			location: req.body.location,
+			ots: req.body.ots,
+			studentNotes: req.body.studentNotes,
+			insNotes: req.body.insNotes,
+			submitted: true
+		});
+
 		await Notification.create({
 			recipient: session.studentCid,
 			read: false,
