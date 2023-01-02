@@ -143,7 +143,6 @@ router.get('/ins', getUser, auth(['atm', 'datm', 'ta', 'ins', 'mtr', 'ia']), asy
 		await TrainingSession.populate(lastTraining, {path: 'milestone'})
 		await TrainingRequest.populate(lastRequest, {path: 'milestone'})
 		const allHomeControllers = await User.find({member:true, rating: {$lt: 12}}).select('-email -idsToken -discordInfo');
-        console.log(allHomeControllers)
         const allCids = allHomeControllers.map(c => c.cid);
 		lastTraining = lastTraining.filter(train => (train.student?.rating < 12 && train.student?.member && !train.student?.vis));
 		const cidsWithTraining = lastTraining.map(train => train.studentCid);
