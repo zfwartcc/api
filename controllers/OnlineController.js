@@ -3,6 +3,7 @@ const router = express.Router();
 import PilotOnline from '../models/PilotOnline.js';
 import AtcOnline from '../models/AtcOnline.js';
 import ControllerHours from '../models/ControllerHours.js';
+import AtcScheduled from '../models/AtcScheduled.js';
 
 const airports = {
 	ORD: 'O\'Hare', 
@@ -103,5 +104,18 @@ router.get('/top', async (req, res) => {
 
 	return res.json(res.stdRes);
 })
+
+router.get('/scheduledpositions', async (req, res) => {
+	console.log('API called: scheduledpositions');
+	console.log('Request query:', req.query);
+	const queryDate = req.query.date;
+	const start = new Date(`${queryDate}T00:00:00.000Z`);
+	const end = new Date(`${queryDate}T23:59:59.999Z`);
+	const positions = await AtcScheduled.find({
+	  day: { $gte: start, $lt: end },
+	}).lean();
+	res.send(positions);
+  });
+  
 
 export default router;
