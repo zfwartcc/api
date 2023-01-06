@@ -184,7 +184,7 @@ router.post("/login", oAuth, async (req, res) => {
     res.cookie("token", apiToken, {
       httpOnly: true,
       maxAge: 2592000000,
-      sameSite: true,
+      sameSite: false,
     }); // Expires in 30 days
   } catch (e) {
     req.app.Sentry.captureException(e);
@@ -229,8 +229,10 @@ router.get("/sessions", getUser, async (req, res) => {
 
 router.get("/discord", getUser, async (req, res) => {
   try {
+
     res.stdRes.data = !!res.user.discordInfo.clientId;
   } catch (e) {
+
     req.app.Sentry.captureException(e);
     res.stdRes.ret_det = e;
   }
