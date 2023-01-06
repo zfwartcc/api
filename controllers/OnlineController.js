@@ -108,14 +108,41 @@ router.get('/top', async (req, res) => {
 router.get('/scheduledpositions', async (req, res) => {
 	console.log('API called: scheduledpositions');
 	console.log('Request query:', req.query);
-	const queryDate = req.query.date;
-	const start = new Date(`${queryDate}T00:00:00.000Z`);
-	const end = new Date(`${queryDate}T23:59:59.999Z`);
+	const queryDate = req.query.day;
+	console.log(queryDate);
+	const start = new Date(Date.parse(`${queryDate}T00:00:00.000Z`));
+	const end = new Date(Date.parse(`${queryDate}T23:59:59.999Z`));
+	console.log(start);
+	console.log(end);
 	const positions = await AtcScheduled.find({
 	  day: { $gte: start, $lt: end },
 	}).lean();
-	res.send(positions);
+	if (positions === undefined) {
+	  res.status(404).send({ error: "No positions found" });
+	} else if (positions === null) { // added condition here
+	  res.status(304).send({ error: "This is terrible on me" });
+	} else {
+	  res.set('Cache-Control', 'no-store');
+	  res.status(200).send(positions);
+	}
+	console.log(positions);
+	console.log("This is the right info above ^")
+	console.log(res.statusCode);
+	console.log(res);
   });
-  
+/*router.post('/scheduledpositions', async (req, res) => {
+	console.log('API called: scheduledpositions');
+	console.log('Request body:', req.body);
+	const positions = await AtcScheduled.create({
+		day: currentDate,
+		user: req.user.cid,
+		zuluTime: this.session.zuluTime,
+		localTime: this.session.localTime,
+		position: this.session.position
+		// Add other fields for the new record here
+	  });
+	  res.send(positions);
+	});*/
+
 
 export default router;
