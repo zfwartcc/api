@@ -128,7 +128,6 @@ router.get('/scheduledpositions', async (req, res) => {
 	console.log(positions);
 	console.log("This is the right info above ^")
 	console.log(res.statusCode);
-	console.log(res);
   });
 /*router.post('/scheduledpositions', async (req, res) => {
 	console.log('API called: scheduledpositions');
