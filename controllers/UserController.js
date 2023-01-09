@@ -185,7 +185,7 @@ router.post("/login", oAuth, async (req, res) => {
       httpOnly: true,
       maxAge: 2592000000,
       sameSite: true,
-      domain: "zauartcc.org",
+      domain: process.env.DOMAIN,
     }); // Expires in 30 days
   } catch (e) {
     req.app.Sentry.captureException(e);
