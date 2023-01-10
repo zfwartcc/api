@@ -71,7 +71,7 @@ router.get('/top', async (req, res) => {
 		const d = new Date();
 		const thisMonth = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1))
 		const nextMonth = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth()+1, 1))
-		const sessions = await ControllerHours.find({timeStart: {$gt: thisMonth, $lt: nextMonth}, position: { $not: /.*_(I|M)_.*/, $or: [{ position: "ORD_I_GND" }, { position: "ORD_M_GND" }]}}).populate('user', 'fname lname cid');
+		const sessions = await ControllerHours.find({$and: [{ position: { $not: /.*_(I|M)_.*/ } },{ timeStart: { $gt: thisMonth, $lt: nextMonth } },{ $or: [{ position: "ORD_I_GND" }, { position: "ORD_M_GND" }] }]}).populate('user', 'fname lname cid');
 		const controllerTimes = {};
 		const positionTimes = {};
 		for(const session of sessions) {
