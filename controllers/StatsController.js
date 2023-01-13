@@ -148,7 +148,7 @@ router.get('/ins', getUser, auth(['atm', 'datm', 'ta', 'ins', 'mtr', 'ia']), asy
 		const cidsWithTraining = lastTraining.map(train => train.studentCid);
 		const cidsWithoutTraining = allCids.filter(cid => !cidsWithTraining.includes(cid))
 
-		const controllersWithoutTraining = allHomeControllers.filter(c => cidsWithoutTraining.includes(c.cid));
+		const controllersWithoutTraining = allHomeControllers.filter((c) => cidsWithoutTraining.includes(c.cid)).filter(c => !c.certCodes.includes('zau'));
 		lastRequest = lastRequest.reduce((acc, cur) => {
 			acc[cur.studentCid] = cur
 			return acc;
