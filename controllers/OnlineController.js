@@ -3,42 +3,41 @@ const router = express.Router();
 import PilotOnline from '../models/PilotOnline.js';
 import AtcOnline from '../models/AtcOnline.js';
 import ControllerHours from '../models/ControllerHours.js';
-import AtcScheduled from '../models/AtcScheduled.js';
 
 const airports = {
 	ORD: 'O\'Hare', 
     MDW: 'Midway', 
     SBN: 'South Bend', 
     MKE: 'Milwaukee', 
-    GRR: 'Grand Rapids',
-	AZO: 'Kalamazoo',
-	BTL: 'Battle Creek',
-	EKM: 'Elkhart',
-	ENW: 'Kenosha',
-	RAC: 'Racine',
-	PWK: 'Palwaukee',
-	ARR: 'Aurora',
-	DPA: 'Du Page',
-	CID: 'Cedar Rapids',
-	UGN: 'Waukegan',
-	MSN: 'Madision',
-	JVL: 'Janesville',
-	GYY: 'Gary',
-	MLI: 'Moline',
-	OSH: 'Oshkosh',
-	UES: 'Waukesha',
-	VOK: 'Volk',
-	MKG: 'Muskegan',
-	ALO: 'Waterloo',
-	DBQ: 'Dubuque',
-	DEC: 'Decatur',
-	FWA: 'Fort Wayne',
-	GUS: 'Grissom',
-	CMI: 'Champign',
-	LAF: 'Lafayette',
-	MWC: 'Timmerman',
-	RFD: 'Rockford',
-	CHI: 'Chicago',
+    GRR: 'Grand Rapids', 
+	AZO: 'Kalamazoo', 
+	BTL: 'Battle Creek', 
+	EKM: 'Elkhart', 
+	ENW: 'Kenosha', 
+	PWK: 'Palwaukee', 
+	ARR: 'Aurora', 
+	DPA: 'Dupage', 
+	CID: 'Cedar Rapids', 
+	UGN: 'Waukegan', 
+	MSN: 'Madision', 
+	JVL: 'Janesville', 
+	GYY: 'Gary', 
+	MLI: 'Moline', 
+	OSH: 'Oshkosh', 
+	UES: 'Waukesha', 
+	VOK: 'Volk', 
+	MKG: 'Muskegan', 
+	ALO: 'Waterloo', 
+	DBQ: 'Dubuque', 
+	DEC: 'Decatur', 
+	FWA: 'Fort Wayne', 
+	GUS: 'Grissom', 
+	CMI: 'Champaign',  
+	LAF: 'Lafayette', 
+	MWC: 'Timmerman', 
+	RFD: 'Rockford', 
+	CHI: 'Chicago', 
+	LOT: 'Lewis University' 
 };
 
 const positions = {
@@ -105,7 +104,7 @@ router.get('/top', async (req, res) => {
 	return res.json(res.stdRes);
 })
 
-router.get('/scheduledpositions', async (req, res) => {
+/*router.get('/scheduledpositions', async (req, res) => {
 	console.log('API called: scheduledpositions');
 	console.log('Request query:', req.query);
 	const queryDate = req.query.day;
@@ -128,7 +127,7 @@ router.get('/scheduledpositions', async (req, res) => {
 	console.log(positions);
 	console.log("This is the right info above ^")
 	console.log(res.statusCode);
-  });
+  });*/
 /*router.post('/scheduledpositions', async (req, res) => {
 	console.log('API called: scheduledpositions');
 	console.log('Request body:', req.body);

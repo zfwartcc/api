@@ -21,6 +21,7 @@ import IdsController from './controllers/IdsController.js';
 import TrainingController from './controllers/TrainingController.js';
 import DiscordController from './controllers/DiscordController.js';
 import StatsController from './controllers/StatsController.js';
+import SchedulingController from './controllers/SchedulingController.js'
 
 // Global Dossier Model
 import Dossier from './models/Dossier.js';
@@ -147,6 +148,7 @@ app.use('/ids', IdsController);
 app.use('/training', TrainingController);
 app.use('/discord', DiscordController);
 app.use('/stats', StatsController);
+app.use('/scheduling', SchedulingController)
 
 if(process.env.NODE_ENV === 'production') app.use(Sentry.Handlers.errorHandler());
 
