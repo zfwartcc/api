@@ -6,8 +6,12 @@ const ScheduledSessionSchema = new m.Schema({
 	submitterCid: Number,
 	startTime: Date,
 	endTime: Date,
-	position: String,
-	facility: String
+	position: {
+		name: String,
+		id: String,
+	},
+	facility: String,
+	positionName: String
 
 }, {
 	collection: "scheduledSessions"
@@ -17,6 +21,13 @@ ScheduledSessionSchema.virtual('submitter', {
 	ref: 'User',
 	localField: 'submitterCid',
 	foreignField: 'cid',
+	justOne: true
+});
+
+ScheduledSessionSchema.virtual('facility2', {
+	ref: 'AtcPosition',
+	localField: 'facility',
+	foreignField: 'code',
 	justOne: true
 });
 

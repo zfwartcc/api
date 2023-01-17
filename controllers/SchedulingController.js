@@ -105,7 +105,8 @@ router.get('/sessions', async (req, res) => {
 	console.log(end);
 	const sessions = await ScheduledSession.find({
 	  startTime: { $gte: start, $lt: end },
-	}).populate('submitter', 'fname lname cid').lean();
+	}).populate('submitter', 'fname lname cid')
+	.populate('facility2', 'code name').lean();
 	if (sessions === undefined) {
 	  res.status(404).send({ error: "No positions found" });
 	} else if (sessions === null) { // added condition here
