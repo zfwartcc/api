@@ -10,8 +10,17 @@ const configSchema = new m.Schema({
 	gcConfig1: String,
 	gcConfig2: String,
 	gcConfig3: String,
+	gcConfig3: String,
 	cdConfig1: String,
 	cdConfig2: String,
+	afldConfig1: String,
+	afldConfig2: String,
+	afldConfig3: String,
+	afldConfig4: String,
+	deprwyConfig1: String,
+	deprwyConfig2: String,
+	arrrwyConfig1: String,
+	arrrwyConfig2: String,
 }, {
 	collection: "config"
 });
