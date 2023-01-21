@@ -21,6 +21,8 @@ const configSchema = new m.Schema({
 	deprwyConfig2: String,
 	arrrwyConfig1: String,
 	arrrwyConfig2: String,
+	apptype1: String,
+	apptype2: String,
 }, {
 	collection: "config"
 });
