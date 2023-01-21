@@ -23,6 +23,7 @@ const configSchema = new m.Schema({
 	arrrwyConfig2: String,
 	apptype1: String,
 	apptype2: String,
+	flow: String,
 }, {
 	collection: "config"
 });
