@@ -8,8 +8,8 @@ import AtcPosition from '../models/AtcPosition.js';
 
 
 router.get('/positions', getUser, async (req, res) => {
-	console.log('API called: scheduling/positions');
-	console.log('Request query:', req.query);
+	//console.log('API called: scheduling/positions');
+	//console.log('Request query:', req.query);
     try {
         const filteredArray = await AtcPosition.find({$or: [{'positions.certCode': {$in: req.query.certCodes}},{'positions.certCode': {$in: req.query.certCodes}}]}).sort({name: 1}).lean();
         const data = filteredArray.map( item => ({
@@ -95,14 +95,14 @@ router.post('/request/new', getUser, async (req, res) => {
 });
 
 router.get('/sessions', async (req, res) => {
-	console.log('API called: scheduling/sessions');
-	console.log('Request query:', req.query);
+	//console.log('API called: scheduling/sessions');
+	//console.log('Request query:', req.query);
 	const queryDate = req.query.startTime;
-	console.log(queryDate);
+	//console.log(queryDate);
 	const start = new Date(Date.parse(`${queryDate}T00:00:00.000Z`));
 	const end = new Date(Date.parse(`${queryDate}T23:59:59.999Z`));
-	console.log(start);
-	console.log(end);
+	//console.log(start);
+	//console.log(end);
 	const sessions = await ScheduledSession.find({
 	  startTime: { $gte: start, $lt: end },
 	}).populate('submitter', 'fname lname cid')
@@ -115,14 +115,14 @@ router.get('/sessions', async (req, res) => {
 	  res.set('Cache-Control', 'no-store');
 	  res.status(200).send(sessions);
 	}
-	console.log(sessions);
-	console.log("This is the right info above ^")
+	//console.log(sessions);
+	//console.log("This is the right info above ^")
 	console.log(res.statusCode);
 });
 
 router.get('/sessions/:id', async (req, res) => {
-	console.log('API called: scheduling/sessions/:id');
-	console.log('Request params:', req.params);
+	//console.log('API called: scheduling/sessions/:id');
+	//console.log('Request params:', req.params);
 	const session = await ScheduledSession.findOne({ _id: req.params.id })
 	  .populate('submitter', 'fname lname cid')
 	  .populate('facility2', 'code name').lean();
@@ -155,7 +155,7 @@ router.delete('/sessions/:_id', getUser, async (req, res) => {
 		// Retrieve session from the database
 		const session = await ScheduledSession.findById(_id);
 		if(!session){
-			console.log("Session not found for id: ", _id);
+			//console.log("Session not found for id: ", _id);
 			return res.status(404).json({ error: 'Session not found' });
 		}
 		// Check if user is ATM or DATM or User is self 
@@ -165,8 +165,8 @@ router.delete('/sessions/:_id', getUser, async (req, res) => {
 		//}
 		// Delete session from the database
 		await ScheduledSession.findByIdAndDelete(_id);
-		console.log("Session with id:", _id, "deleted successfully");
-		console.log('Session deleted successfully');
+		//console.log("Session with id:", _id, "deleted successfully");
+		//console.log('Session deleted successfully');
 		res.json({ message: 'Session removed successfully' });
 	} catch (error) {
 		console.error(error);
