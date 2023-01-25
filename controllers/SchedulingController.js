@@ -118,7 +118,22 @@ router.get('/sessions', async (req, res) => {
 	console.log(sessions);
 	console.log("This is the right info above ^")
 	console.log(res.statusCode);
-  });
+});
+
+router.get('/sessions/:id', async (req, res) => {
+	console.log('API called: scheduling/sessions/:id');
+	console.log('Request params:', req.params);
+	const session = await ScheduledSession.findOne({ _id: req.params.id })
+	  .populate('submitter', 'fname lname cid')
+	  .populate('facility2', 'code name').lean();
+	if (!session) {
+	  res.status(404).send({ error: "Session not found" });
+	} else {
+	  res.set('Cache-Control', 'no-store');
+	  res.status(200).send(session);
+	}
+});
+
 /*router.post('/scheduledpositions', async (req, res) => {
 	console.log('API called: scheduledpositions');
 	console.log('Request body:', req.body);
@@ -144,10 +159,10 @@ router.delete('/sessions/:_id', getUser, async (req, res) => {
 			return res.status(404).json({ error: 'Session not found' });
 		}
 		// Check if user is ATM or DATM or User is self 
-		if(!(req.user.roles.atm || req.user.roles.datm || req.user.cid) ){
-			console.log("Unauthorized user to delete session: ", _id);
-			return res.status(401).json({error: 'Unauthorized'});
-		}
+		//if(!(req.user.roles === 'atm' || req.user.roles === 'datm' || req.user.cid) ){
+		//	console.log("Unauthorized user to delete session: ", _id);
+		//	return res.status(401).json({error: 'Unauthorized'});
+		//}
 		// Delete session from the database
 		await ScheduledSession.findByIdAndDelete(_id);
 		console.log("Session with id:", _id, "deleted successfully");
