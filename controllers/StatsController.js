@@ -172,7 +172,7 @@ router.get('/activity', getUser, auth(['atm', 'datm', 'ta', 'wm']), async (req, 
 	try {
 		const today = L.utc();
 		const chkDate = today.minus({days: 31});
-		const users = await User.find({member: true}).select('fname lname cid rating oi vis createdAt roleCodes certCodes joinDate').populate('certifications').lean({virtuals: true});
+		const users = await User.find({member: true}).select('fname lname cid rating oi vis createdAt roleCodes certCodes joinDate').populate('certifications').populate({path: 'absence', match: {expirationDate: {$gte: new Date()},deleted: false},select: '-reason'}).lean({virtuals: true});
 		const activityReduced = {};
 		const trainingReduced = {};
 
@@ -212,7 +212,7 @@ router.get('/activity', getUser, auth(['atm', 'datm', 'ta', 'wm']), async (req, 
 				totalRequests,
 				fiftyTime: Math.round(fiftyTime),
 				tooLow: totalTime < 3600 && (user.createdAt) < chkDate,
-				protected: user.isStaff || [1202744].includes(user.cid)
+				protected: user.isStaff || [1202744].includes(user.cid) || user.absence.some(a => !a.deleted && new Date(a.expirationDate) > new Date() && a.controller === user.cid)
 			}
 		}
 		res.stdRes.data = Object.values(userData);
